@@ -43,4 +43,7 @@ export class RegisterDto {
     @IsString({ message: "City must be a string" })
     @MaxLength(100, { message: "City name must be less than 100 characters" })
     city?: string;
+    
+
+
 }

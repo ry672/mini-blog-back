@@ -5,6 +5,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
+import { CommentsModule } from './comments/comments.module';
+import { CategoriesModule } from './categories/categories.module';
+
 
 
 @Module({
@@ -21,7 +24,7 @@ import { AuthModule } from './auth/auth.module';
      synchronize: true,
      logging: process.env.MODE === 'development',
      sync: {force: process.env.MODE === 'development'}
-    }), UsersModule, PostsModule, AuthModule
+    }),AuthModule, UsersModule, PostsModule, CommentsModule, CategoriesModule
   ],
 
 })

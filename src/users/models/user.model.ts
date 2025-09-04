@@ -2,9 +2,7 @@ import {
     Table,
     Column,
     Model,
-    DataType,
-    PrimaryKey,
-    AutoIncrement,
+    DataType
 } from "sequelize-typescript";
 
 interface UserModelCreation {
@@ -15,6 +13,7 @@ interface UserModelCreation {
     email: string;
     password: string;
     city?: string;
+    
 }
 
 @Table({
@@ -52,7 +51,7 @@ export class UserModel extends Model<UserModel, UserModelCreation> {
     @Column({ type: DataType.STRING, allowNull: false })
     password: string;
 
-
+    
 
 
     @Column({ type: DataType.STRING, allowNull: true,defaultValue: null })

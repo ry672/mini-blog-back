@@ -10,20 +10,20 @@ import {
 
 export class CreateUserDto {
     @ApiProperty({example: "Rufina", description: "Отоброжаемое имя пользоавателя"})
-    @IsString({ message: "Name must be a string" })
-    @MaxLength(50, { message: "Name must be less than 50 characters" })
+    @IsString({ message: "Имя должно быть строкой" })
+    @MaxLength(20, { message: "Имя Должно быть меньше 20 символов" })
     name: string;
 
     @ApiProperty({ example: "Garaeva", description: "Фамилия пользователя" })
     @IsOptional()
-    @IsString({ message: "Surname must be a string" })
-    @MaxLength(50, { message: "Surname must be less than 50 characters" })
+    @IsString({ message: "Фамилия должна быть строкой" })
+    @MaxLength(30, { message: "Фамилия должна быть меньше 30 символов" })
     surname?: string;
 
     @ApiProperty({ example: "rufina7306", description: "Уникальный никнейм" })
-    @IsString({ message: "Username must be a string" })
-    @MinLength(3, { message: "Username must be at least 3 characters" })
-    @MaxLength(32, { message: "Username must be less than 32 characters" })
+    @IsString({ message: "Никнейм должен быть строкой" })
+    @MinLength(8, { message: "Никнейм должен содержать не меньше 8 символов" })
+    @MaxLength(10, { message: "Никнейм должен содерджать не больше 10 символов" })
     username: string;
 
     @ApiProperty({ example: "+998903725937", description: "Номер телефона" })
@@ -38,17 +38,19 @@ export class CreateUserDto {
     email: string;
 
     @ApiProperty({ example: "qwerty123", description: "Пароль пользователя" })
-    @IsString({ message: "Password must be a string" })
-    @MinLength(6, { message: "Password must be at least 6 characters" })
-    @MaxLength(100, { message: "Password must be less than 100 characters" })
+    @IsString({ message: "Пароль должен быть строкой" })
+    @MinLength(6, { message: "Пароль должен содержать не меньше 6 символов" })
+    @MaxLength(10, { message: "Пароль должен содержать не больше 15 символов" })
     password: string;
 
- 
+   
 
     @ApiProperty({ example: "Tashkent", description: "Город проживания" })
     @IsOptional()
-    @IsString({ message: "City must be a string" })
-    @MaxLength(100, { message: "City name must be less than 100 characters" })
+    @IsString({ message: "Город должен быть строкой" })
+    @MaxLength(15, { message: "Город должен содержать не больше 15 символов" })
     city?: string;
+
+
 }
 
