@@ -24,7 +24,8 @@ export class AuthService {
       username: dto.username,
       phone_number: dto.phone_number,
       email: dto.email,
-      password: hash
+      password: hash,
+      profile_photo: dto.profile_photo
 
     })
     const payload = {sub: user.id, email: user.email}
@@ -39,7 +40,7 @@ export class AuthService {
   async login (dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email)
     if(!user) throw new UnauthorizedException("Неверный логин или пароль")
-    if(!dto.password || user.password){
+    if(!dto.password || !user.password){
       throw new UnauthorizedException("Неверный логин или пароль")
     }
     const isMatch = await bcrypt.compare(dto.password, user.password)

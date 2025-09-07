@@ -24,7 +24,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -40,7 +40,7 @@ export class PostsController {
     FilesInterceptor('images', 10, {
       
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/posts',
         filename: (req, file, cb) => {
            const originalName = file.originalname;
             
@@ -66,6 +66,7 @@ export class PostsController {
           type: 'array',
           items: { type: 'string', format: 'binary' },
         },
+        categoryId: {type: 'number'}
         
       },
     },
@@ -76,7 +77,7 @@ export class PostsController {
     @UploadedFiles() files: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
-      createPostDto.images = files.map((file) => `/uploads/${file.filename}`);
+      createPostDto.images = files.map((file) => `/uploads/posts/${file.filename}`);
     }
     return this.postsService.create(+userId, createPostDto);
   }
@@ -125,21 +126,8 @@ export class PostsController {
   remove(@Param('id') id: string) {
     return this.postsService.remove(+id);
   }
+  
 
-  @ApiOperation({ summary: 'Поставить лайк посту' })
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard)
-  @Post('like/:id')
-  like(@Param('id') id: string) {
-    return this.postsService.like(+id);
-  }
-
-  @Put('unlike/:id')
-  @ApiOperation({ summary: 'Удалить лайк с поста' })
-  @ApiResponse({ status: 200, description: 'Лайк удалён' })
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard)
-  unlike(@Param('id') id: string) {
-    return this.postsService.unlike(+id);
-  }
+  
+  
 }

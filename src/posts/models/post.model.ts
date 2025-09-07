@@ -5,38 +5,46 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { UserModel } from '../../users/models/user.model';
-
+import { CategoryModel } from '../../categories/models/category.model';
+import { LikeModel } from './like.model';
 
 interface PostCreationAttrs {
   title: string;
   content: string;
   images?: string[];
   userId: number;
-  
+  categoryId: number;
 }
 
 @Table({ tableName: 'posts', timestamps: true })
 export class PostModel extends Model<PostModel, PostCreationAttrs> {
   @Column({ type: DataType.STRING, allowNull: false })
-  title: string;
+  declare title: string;
 
   @Column({ type: DataType.TEXT, allowNull: false })
-  content: string;
+  declare content: string;
 
   @Column({ type: DataType.JSON, allowNull: true })
-  images: string[];
-
-  @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 0 })
-  likes: number;
+  declare images: string[];
 
   @ForeignKey(() => UserModel)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  userId: number;
+  declare userId: number;
 
   @BelongsTo(() => UserModel)
-  author: UserModel;
+  declare author: UserModel;
+
+  @ForeignKey(() => CategoryModel)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare categoryId: number;
+
+  @BelongsTo(() => CategoryModel)
+  declare category: CategoryModel;
+
 
   
 }
+

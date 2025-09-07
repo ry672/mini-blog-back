@@ -1,17 +1,26 @@
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { PostModel } from '../../posts/models/post.model';
 
-import { Column, DataType, Model, Table } from "sequelize-typescript";
-
-type CategoryModelCreation = {
-    name: string
+interface CategoryCreationAttrs {
+  name: string;
+  description?: string;
 }
 
-@Table({tableName: 'category'})
-export class CategoryModel extends Model<CategoryModel>{
-    @Column({type: DataType.INTEGER, autoIncrement: true, primaryKey: true})
-    declare id: number;
+@Table({ tableName: 'categories', timestamps: true })
+export class CategoryModel extends Model<CategoryModel, CategoryCreationAttrs> {
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  declare name: string;
 
-    @Column({type: DataType.STRING, allowNull: false})
-    name: string
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare description: string;
 
-
+  @HasMany(() => PostModel)
+  declare posts: PostModel[];
 }
+

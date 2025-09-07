@@ -13,6 +13,7 @@ interface UserModelCreation {
     email: string;
     password: string;
     city?: string;
+    profile_photo?: string;
     
 }
 
@@ -22,40 +23,46 @@ interface UserModelCreation {
 })
 export class UserModel extends Model<UserModel, UserModelCreation> {
     @Column({ type: DataType.STRING, allowNull: false })
-    name: string;
+    declare name: string;
 
     @Column({ type: DataType.STRING, allowNull: true , defaultValue: null})
-    surname: string;
+    declare surname: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
         unique: true, 
     })
-    username: string;
+    declare username: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
         unique: true, 
     })
-    phone_number: string;
+    declare phone_number: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
         unique: true, 
     })
-    email: string;
+    declare email: string;
 
     @Column({ type: DataType.STRING, allowNull: false })
-    password: string;
+    declare password: string;
 
     
 
 
     @Column({ type: DataType.STRING, allowNull: true,defaultValue: null })
-    city: string;
+    declare city: string;
+
+
+    @Column({ type: DataType.STRING, allowNull: true })
+    declare profile_photo: string;
+
+
 
  
 }

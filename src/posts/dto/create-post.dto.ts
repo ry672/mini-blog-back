@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
 
 import { IsString, IsOptional, MaxLength, IsArray, IsInt } from "class-validator";
 
@@ -20,9 +21,10 @@ export class CreatePostDto {
     @IsString({ each: true })
     images?: string[];
 
-
-   
-
+    @ApiProperty({ example: 1, description: "ID категории" })
+    @Type(() => Number)
+    @IsInt()
+    categoryId: number;
 
 }
 

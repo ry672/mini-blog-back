@@ -27,6 +27,7 @@ export class UsersService {
       email: dto.email,
       password: dto.password,
       city: dto.city,
+      profile_photo: dto.profile_photo,
       
 
     });
