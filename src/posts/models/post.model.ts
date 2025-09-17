@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { UserModel } from '../../users/models/user.model';
 import { CategoryModel } from '../../categories/models/category.model';
-import { LikeModel } from './like.model';
+
 
 interface PostCreationAttrs {
   title: string;
@@ -20,7 +20,7 @@ interface PostCreationAttrs {
 }
 
 @Table({ tableName: 'posts', timestamps: true })
-export class PostModel extends Model<PostModel, PostCreationAttrs> {
+export class PostModel extends Model<PostModel, PostCreationAttrs > {
   @Column({ type: DataType.STRING, allowNull: false })
   declare title: string;
 

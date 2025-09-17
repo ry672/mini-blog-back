@@ -1,23 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/users/users.module';
-import { PassportModule } from '@nestjs/passport';
+
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { UserModel } from 'src/users/models/user.model';
+import { RoleModel } from 'src/roles/models/role.model';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
-    UsersModule,
-    PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: {expiresIn: process.env.JWT_EXPIRES || '2d'}
-    })
+    ConfigModule,
+    SequelizeModule.forFeature([UserModel, RoleModel]),
+    JwtModule.register({})
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [AuthService]
 })
 export class AuthModule {}

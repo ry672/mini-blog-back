@@ -7,6 +7,10 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
 import { CategoriesModule } from './categories/categories.module';
+import { RolesModule } from './roles/roles.module';
+import { MeModule } from './me/me.module';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 
 
@@ -24,7 +28,7 @@ import { CategoriesModule } from './categories/categories.module';
      synchronize: true,
      logging: process.env.MODE === 'development',
      sync: {force: process.env.MODE === 'development'}
-    }),AuthModule, UsersModule, PostsModule, CommentsModule, CategoriesModule
+    }),ServeStaticModule.forRoot({rootPath: join(process.cwd(), 'uploads'), serveRoot: '/static'}),AuthModule, UsersModule, PostsModule, CommentsModule, CategoriesModule, RolesModule, MeModule
   ],
 
 })

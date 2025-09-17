@@ -4,11 +4,14 @@ import { PostModel } from './models/post.model';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
+
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(PostModel)
     private readonly postModel: typeof PostModel,
+    
+
   ) {}
 
   async create(userId: number, dto: CreatePostDto) {
@@ -59,6 +62,8 @@ export class PostsService {
 
     return posts;
   }
+
+  
 
   
 }

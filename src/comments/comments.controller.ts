@@ -1,9 +1,24 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -15,18 +30,21 @@ export class CommentsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Post(':postId')
-  create(@Param('postId') postId: string, @Req() req, @Body() dto: CreateCommentDto) {
-    
-    return this.commentsService.create(req.user.userId, +postId, dto);
+  create(
+    @Param('postId') postId: string,
+    @Req() req,
+    @Body() dto: CreateCommentDto,
+  ) {
+    return this.commentsService.create(req.user.id, +postId, dto);
   }
 
   @ApiOperation({ summary: 'Получить все комментарии user' })
   @ApiResponse({ status: 200, description: 'Список комментариев получен' })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
-  @Get('user/:userId') 
+  @Get('user/:userId')
   findAllByUser(@Param('userId') userId: string) {
-    return this.commentsService.findAllByUser(+userId)
+    return this.commentsService.findAllByUser(+userId);
   }
 
   @ApiOperation({ summary: 'Получить все комментарии к посту' })
@@ -65,9 +83,3 @@ export class CommentsController {
     return this.commentsService.remove(+id, req.user.userId);
   }
 }
-
-
-
-
-
-

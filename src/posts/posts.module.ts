@@ -6,7 +6,8 @@ import { PostModel } from "./models/post.model";
 import { PostsService } from "./posts.service";
 import { PostsController } from "./posts.controller";
 import { UserModel } from "src/users/models/user.model";
-import { LikeModel } from "./models/like.model";
+
+
 
 
 @Module({

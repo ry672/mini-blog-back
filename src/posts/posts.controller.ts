@@ -9,6 +9,8 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFiles,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -21,36 +23,32 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-
 
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
-  
-  @ApiOperation({ summary: 'Получить все посты' })
-  @ApiResponse({ status: 200, description: 'Список всех постов' })
+
+  @ApiOperation({ summary: 'Создать посты' })
+  @ApiResponse({ status: 200, description: 'Пост успешно создан' })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Post(':userId')
   @UseInterceptors(
     FilesInterceptor('images', 10, {
-      
       storage: diskStorage({
         destination: './uploads/posts',
         filename: (req, file, cb) => {
-           const originalName = file.originalname;
-            
-            
-            const ext = originalName.includes('.') ? '' : '.jpg';
-            
-            const safeName = originalName + ext; 
-            
-            cb(null, safeName);
+          const originalName = file.originalname;
 
+          const ext = originalName.includes('.') ? '' : '.jpg';
+
+          const safeName = originalName + ext;
+
+          cb(null, safeName);
         },
       }),
     }),
@@ -60,14 +58,13 @@ export class PostsController {
     schema: {
       type: 'object',
       properties: {
-        title: { type: 'string' },
-        content: { type: 'string' },
+        title: { type: 'string', example: 'Мой первый пост!' },
+        content: { type: 'string', example: 'Сегодня......' },
         images: {
           type: 'array',
           items: { type: 'string', format: 'binary' },
         },
-        categoryId: {type: 'number'}
-        
+        categoryId: { type: 'number' },
       },
     },
   })
@@ -77,7 +74,9 @@ export class PostsController {
     @UploadedFiles() files: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
-      createPostDto.images = files.map((file) => `/uploads/posts/${file.filename}`);
+      createPostDto.images = files.map(
+        (file) => `/uploads/posts/${file.filename}`,
+      );
     }
     return this.postsService.create(+userId, createPostDto);
   }
@@ -126,8 +125,6 @@ export class PostsController {
   remove(@Param('id') id: string) {
     return this.postsService.remove(+id);
   }
-  
 
-  
   
 }

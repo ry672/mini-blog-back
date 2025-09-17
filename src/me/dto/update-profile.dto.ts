@@ -1,21 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsString,
   IsEmail,
   IsOptional,
-  MinLength,
-  MaxLength,
+  IsString,
   Matches,
-  IsArray,
+  MaxLength,
+  MinLength,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateProfileDto {
   @ApiProperty({
     example: 'Rufina',
-    description: 'Отоброжаемое имя пользоавателя',
+    description: 'Отображаемое имя пользователя',
   })
   @IsString({ message: 'Имя должно быть строкой' })
-  @MaxLength(20, { message: 'Имя Должно быть меньше 20 символов' })
+  @MaxLength(20, { message: 'Имя должно быть меньше 20 символов' })
   name: string;
 
   @ApiProperty({ example: 'Garaeva', description: 'Фамилия пользователя' })
@@ -27,7 +26,7 @@ export class CreateUserDto {
   @ApiProperty({ example: 'rufina7306', description: 'Уникальный никнейм' })
   @IsString({ message: 'Никнейм должен быть строкой' })
   @MinLength(8, { message: 'Никнейм должен содержать не меньше 8 символов' })
-  @MaxLength(10, { message: 'Никнейм должен содерджать не больше 10 символов' })
+  @MaxLength(10, { message: 'Никнейм должен содержать не больше 10 символов' })
   username: string;
 
   @ApiProperty({
@@ -43,13 +42,13 @@ export class CreateUserDto {
     example: 'rufina@gmail.com',
     description: 'Электронная почта',
   })
-  @IsEmail({}, { message: 'Invalid email address' })
+  @IsEmail({}, { message: 'Некорректный адрес электронной почты' })
   email: string;
 
   @ApiProperty({ example: 'qwerty123', description: 'Пароль пользователя' })
   @IsString({ message: 'Пароль должен быть строкой' })
   @MinLength(6, { message: 'Пароль должен содержать не меньше 6 символов' })
-  @MaxLength(10, { message: 'Пароль должен содержать не больше 15 символов' })
+  @MaxLength(15, { message: 'Пароль должен содержать не больше 15 символов' })
   password: string;
 
   @ApiProperty({ example: 'Tashkent', description: 'Город проживания' })
@@ -58,3 +57,4 @@ export class CreateUserDto {
   @MaxLength(15, { message: 'Город должен содержать не больше 15 символов' })
   city?: string;
 }
+

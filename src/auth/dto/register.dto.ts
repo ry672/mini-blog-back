@@ -30,9 +30,12 @@ export class RegisterDto {
   @MaxLength(32, { message: 'Username must be less than 32 characters' })
   username: string;
 
-  @ApiProperty({ example: '+998903725937', description: 'Номер телефона' })
-  @Matches(/^\+?[0-9]{9,15}$/, {
-    message: 'Phone number must contain only numbers and be 9-15 digits',
+  @ApiProperty({
+    example: '+998901234567',
+    description: 'Номер телефона (Узбекистан)',
+  })
+  @Matches(/^\+998\d{9}$/, {
+    message: 'Номер телефона должен быть в формате +998XXXXXXXXX',
   })
   phone_number: string;
 
@@ -48,13 +51,6 @@ export class RegisterDto {
   @MinLength(6, { message: 'Password must be at least 6 characters' })
   @MaxLength(100, { message: 'Password must be less than 100 characters' })
   password: string;
-
-  @ApiProperty({
-    example: '/uploads/users/avatar.jpg',
-    required: false,
-  })
-  @IsOptional()
-  profile_photo?: string
 
   @ApiProperty({ example: 'Tashkent', description: 'Город проживания' })
   @IsOptional()
