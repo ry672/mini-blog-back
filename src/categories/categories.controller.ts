@@ -20,17 +20,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
   
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Создать категорию' })
-  @ApiResponse({ status: 201 })
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard)
-  @Roles('admin')
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
-  }
+  
 
   @ApiOperation({ summary: 'Список всех категорий' })
   @ApiResponse({ status: 200 })

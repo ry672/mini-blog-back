@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "Black7306",
+    "database": "mini-blog",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "Black7306",
+    "database": "mini-blog-test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "Black7306",
+    "database": "mini-blog-prod",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
+

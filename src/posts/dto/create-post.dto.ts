@@ -24,7 +24,7 @@ export class CreatePostDto {
     @ApiProperty({ example: 1, description: "ID категории" })
     @Type(() => Number)
     @IsInt()
-    categoryId: number;
+    categoryId?: number;
 
 }
 

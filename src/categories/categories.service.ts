@@ -16,10 +16,20 @@ export class CategoriesService {
     private readonly postModel: typeof PostModel,
   ) {}
 
-  async create(dto: CreateCategoryDto) {
-    return await this.categoryModel.create(
-      dto as CreationAttributes<CategoryModel>,
-    );
+  async seedCategories() {
+    const count = await this.categoryModel.count();
+    if (count === 0) {
+      await this.categoryModel.bulkCreate([
+        { name: 'Развитие', description: 'N E W' },
+        { name: 'Стиль', description: 'Aesthetics'},
+        {name: 'Творчество', description: 'дом твоей эстетики'},
+        { name: 'Искусство', description: 'wailet'},
+        { name: 'Развитие', description: 'A W E S O M E'},
+        {name: 'Фотография', description: 'minimalism'},
+        { name: 'Литература', description: 'Словарный запас'},
+      ]);
+      console.log('Категории засеяны в базу');
+    }
   }
 
   async findAll() {

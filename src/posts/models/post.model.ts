@@ -9,7 +9,8 @@ import {
 } from 'sequelize-typescript';
 import { UserModel } from '../../users/models/user.model';
 import { CategoryModel } from '../../categories/models/category.model';
-import { LikeModel } from './like.model';
+import { CreationOptional } from 'sequelize';
+
 
 
 interface PostCreationAttrs {
@@ -17,7 +18,7 @@ interface PostCreationAttrs {
   content: string;
   images?: string[];
   userId: number;
-  categoryId: number;
+  categoryId?: number;
 }
 
 @Table({ tableName: 'posts', timestamps: true })
@@ -39,8 +40,8 @@ export class PostModel extends Model<PostModel, PostCreationAttrs > {
   declare author: UserModel;
 
   @ForeignKey(() => CategoryModel)
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  declare categoryId: number;
+  @Column({ type: DataType.INTEGER, allowNull: true })
+  declare categoryId?: number;
 
   @BelongsTo(() => CategoryModel)
   declare category: CategoryModel;

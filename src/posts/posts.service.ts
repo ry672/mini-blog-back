@@ -19,7 +19,7 @@ export class PostsService {
     return await this.postModel.create({ ...dto, userId });
   }
 
-  // Новый метод: получить все посты с лайк-инфой по текущему пользователю
+  
   async findAllWithLikeInfo(currentUserId: number): Promise<any> {
     const posts = await this.postModel.findAll();
 
@@ -30,7 +30,7 @@ export class PostsService {
     }));
   }
 
-  // Новый метод: посты пользователя с лайк-инфой
+  
   async findByUserIdWithLikeInfo(userId: number, currentUserId: number): Promise<any> {
     const posts = await this.postModel.findAll({
       where: { userId },
@@ -47,7 +47,7 @@ export class PostsService {
     }));
   }
 
-  // Новый метод: один пост с лайк-инфой
+  
   async findByPkWithLikeInfo(id: number, currentUserId: number): Promise<any> {
     const post = await this.postModel.findByPk(id);
     if (!post) throw new NotFoundException('Пост не найден');

@@ -72,13 +72,13 @@ export class AuthService {
 
     const roles = (withRoles.roles ?? []).map((r) => r.name);
 
-    // Проверяем, что user.id определён
+
     if (!user.id) throw new UnauthorizedException('Некорректный пользователь');
 
     const tokens = await this.signTokens(user.id, user.email, roles);
     await this.setRefreshHash(user.id, tokens.refresh);
 
-    return { user: withRoles.toJSON(), ...tokens };
+    return { status: 'success', user: withRoles.toJSON(), ...tokens };
   }
 
   async login(dto: LoginDto) {
@@ -106,6 +106,7 @@ export class AuthService {
     await this.setRefreshHash(user.id, tokens.refresh);
 
     return {
+      status: 'success',
       user: user.toJSON(),
       ...tokens,
     };
