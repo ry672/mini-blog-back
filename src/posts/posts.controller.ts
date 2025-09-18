@@ -10,7 +10,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Req,
-  UnauthorizedException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -26,6 +26,7 @@ import {
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import type { Request } from 'express';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -43,11 +44,8 @@ export class PostsController {
         destination: './uploads/posts',
         filename: (req, file, cb) => {
           const originalName = file.originalname;
-
           const ext = originalName.includes('.') ? '' : '.jpg';
-
           const safeName = originalName + ext;
-
           cb(null, safeName);
         },
       }),
@@ -86,8 +84,9 @@ export class PostsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Req() req: Request) {
+    const currentUserId = (req as any).user.id;
+    return this.postsService.findAllWithLikeInfo(currentUserId);
   }
 
   @ApiOperation({ summary: 'Получить все посты конкретного пользователя' })
@@ -95,8 +94,12 @@ export class PostsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Get('user/:userId')
-  findByUserId(@Param('userId') userId: string) {
-    return this.postsService.findByUserId(+userId);
+  findByUserId(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Req() req: Request,
+  ) {
+    const currentUserId = (req as any).user.id;
+    return this.postsService.findByUserIdWithLikeInfo(userId, currentUserId);
   }
 
   @ApiOperation({ summary: 'Получить пост по ID' })
@@ -104,8 +107,12 @@ export class PostsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findByPk(@Param('id') id: string) {
-    return this.postsService.findByPk(+id);
+  findByPk(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: Request,
+  ) {
+    const currentUserId = (req as any).user.id;
+    return this.postsService.findByPkWithLikeInfo(id, currentUserId);
   }
 
   @ApiOperation({ summary: 'Обновить пост' })
@@ -113,8 +120,11 @@ export class PostsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(+id, updatePostDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePostDto: UpdatePostDto,
+  ) {
+    return this.postsService.update(id, updatePostDto);
   }
 
   @ApiOperation({ summary: 'Удалить пост' })
@@ -122,9 +132,19 @@ export class PostsController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.remove(id);
   }
 
-  
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/like')
+  async toggleLike(
+    @Param('id', ParseIntPipe) postId: number,
+    @Req() req: Request,
+  ) {
+    const userId = (req as any).user.id;
+    return this.postsService.toggleLikeAndReturn(userId, postId);
+  }
 }
+

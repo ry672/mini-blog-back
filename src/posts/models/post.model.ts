@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { UserModel } from '../../users/models/user.model';
 import { CategoryModel } from '../../categories/models/category.model';
+import { LikeModel } from './like.model';
 
 
 interface PostCreationAttrs {
@@ -44,6 +45,8 @@ export class PostModel extends Model<PostModel, PostCreationAttrs > {
   @BelongsTo(() => CategoryModel)
   declare category: CategoryModel;
 
+  @Column({ type: DataType.ARRAY(DataType.INTEGER), defaultValue: [] })
+  declare likedUserIds: number[];
 
   
 }
