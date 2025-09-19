@@ -18,7 +18,7 @@ interface PostCreationAttrs {
   content: string;
   images?: string[];
   userId: number;
-  categoryId?: number;
+  categoryId?: number | null;
 }
 
 @Table({ tableName: 'posts', timestamps: true })
@@ -41,7 +41,7 @@ export class PostModel extends Model<PostModel, PostCreationAttrs > {
 
   @ForeignKey(() => CategoryModel)
   @Column({ type: DataType.INTEGER, allowNull: true })
-  declare categoryId?: number;
+  declare categoryId?: number | null;
 
   @BelongsTo(() => CategoryModel)
   declare category: CategoryModel;
